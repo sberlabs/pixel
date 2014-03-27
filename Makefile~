@@ -1,0 +1,8 @@
+PROJECT = pixel
+
+DEPS = cowboy sync
+dep_cowboy = pkg://cowboy master
+dep_sync = https://github.com/rustyio/sync.git master
+
+include erlang.mk
+
