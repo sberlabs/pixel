@@ -6,7 +6,8 @@
     {applications, [
         kernel,
         stdlib,
-        cowboy
+        cowboy,
+        writer
     ]},
     {mod, {pixel_app, []}},
     {env, []}

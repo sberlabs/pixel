@@ -1,7 +1,7 @@
 #!/bin/sh
-apps="sync,ranch,crypto,cowlib,cowboy,pixel"
+apps="sync,ranch,crypto,cowlib,cowboy,writer,pixel"
 
 init_code="[io:format(\"~p~n\", [application:start(A)]) || A <- [$apps]]."
 
 erl -sname pixel@localhost -setcookie pixel -pa $PWD/deps/*/ebin \
-    -pa $PWD/ebin -config sync -eval "$init_code"
+    -pa $PWD/apps/*/ebin -config sync -eval "$init_code"

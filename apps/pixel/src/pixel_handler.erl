@@ -37,7 +37,9 @@ handle(Req, State) ->
     {headers, {Headers}}
   ]},
 
-  io:format("JSON: ~n~s~n", [jiffy:encode(Doc)]),
+  JSONString = jiffy:encode(Doc),
+  CR = <<13>>,
+  writer_srv:log(<<JSONString/binary, CR/binary>>),
 
   {ok, Req11} = cowboy_req:reply(200, [
       {<<"content-type">>, <<"text/plain">>},

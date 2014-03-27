@@ -1,5 +1,7 @@
 PROJECT = pixel
 
+DEPS_DIR = ../../deps
+
 DEPS = cowboy jiffy
 
 dep_cowboy = pkg://cowboy master

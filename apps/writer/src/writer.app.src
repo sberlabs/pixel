@@ -1,0 +1,12 @@
+{application, writer, [
+  {description, "Asynchronous log writer application"},
+  {vsn, "0.1.0"},
+  {modules, []},
+  {registered, [writer_sup]},
+  {applications, [
+    kernel,
+    stdlib
+  ]},
+  {mod, {writer_app, []}},
+  {env, []}
+]}.
