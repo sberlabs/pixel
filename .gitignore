@@ -7,4 +7,5 @@ relx
 test/*.beam
 *.iml
 .idea
-
+out
+*~
