@@ -5,6 +5,9 @@
 -export([handle/2]).
 -export([terminate/3]).
 
+-define(NEVER, <<"Wednesday, February 28, 2114 12:45:13 PM">>).
+-define(TENYEARS, 10*365*24*60*60).
+
 init(_Type, Req, _Opts) ->
   {ok, Req, undefined_state}.
 
@@ -19,6 +22,10 @@ handle(Req, State) ->
   {Mid, Req9}         = cowboy_req:qs_val(<<"mid">>, Req8, <<"">>),
   {URL, Req10}        = cowboy_req:url(Req9),
 
+  UUID = list_to_binary(uuid:to_string(uuid:uuid4())),
+  {Cookie, Req11} = cowboy_req:cookie(<<"sberlabs-px">>, Req10, UUID),
+  Req12 = cowboy_req:set_resp_cookie(<<"sberlabs-px">>, Cookie, [{max_age, ?TENYEARS}], Req11),
+
   Doc = {[
     {ts, jstime(os:timestamp())},
     {client, {[
@@ -32,6 +39,7 @@ handle(Req, State) ->
       {path, Path},
       {query, Query}
     ]}},
+    {pxcookie, Cookie},
     {pid, Pid},
     {mid, Mid},
     {headers, {Headers}}
@@ -41,11 +49,11 @@ handle(Req, State) ->
   CR = <<13>>,
   writer_srv:log(<<JSONString/binary, CR/binary>>),
 
-  {ok, Req11} = cowboy_req:reply(200, [
+  {ok, Req13} = cowboy_req:reply(200, [
       {<<"content-type">>, <<"text/plain">>},
       {<<"connection">>, <<"close">>}
-  ], <<"Hello, World XXXXXX!">>, Req10),
-  {ok, Req11, State}.
+  ], <<"Hello, World XXXXXX!">>, Req12),
+  {ok, Req13, State}.
 
 terminate(_Reason, _Req, _State) ->
     ok.
