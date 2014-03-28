@@ -5,8 +5,9 @@
 -export([handle/2]).
 -export([terminate/3]).
 
--define(NEVER, <<"Wednesday, February 28, 2114 12:45:13 PM">>).
 -define(TENYEARS, 10*365*24*60*60).
+-define(CR, 13).
+-define(PIXEL_PNG, "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=").
 
 init(_Type, Req, _Opts) ->
   {ok, Req, undefined_state}.
@@ -23,8 +24,8 @@ handle(Req, State) ->
   {URL, Req10}        = cowboy_req:url(Req9),
 
   UUID = list_to_binary(uuid:to_string(uuid:uuid4())),
-  {Cookie, Req11} = cowboy_req:cookie(<<"sberlabs-px">>, Req10, UUID),
-  Req12 = cowboy_req:set_resp_cookie(<<"sberlabs-px">>, Cookie, [{max_age, ?TENYEARS}], Req11),
+  {Cookie, Req11} = cowboy_req:cookie(<<"sberlabspx">>, Req10, UUID),
+  Req12 = cowboy_req:set_resp_cookie(<<"sberlabspx">>, Cookie, [{max_age, ?TENYEARS}], Req11),
 
   Doc = {[
     {ts, jstime(os:timestamp())},
@@ -39,7 +40,7 @@ handle(Req, State) ->
       {path, Path},
       {query, Query}
     ]}},
-    {pxcookie, Cookie},
+    {sberlabspx, Cookie},
     {pid, Pid},
     {mid, Mid},
     {headers, {Headers}}
@@ -50,9 +51,9 @@ handle(Req, State) ->
   writer_srv:log(<<JSONString/binary, CR/binary>>),
 
   {ok, Req13} = cowboy_req:reply(200, [
-      {<<"content-type">>, <<"text/plain">>},
+      {<<"content-type">>, <<"image/png">>},
       {<<"connection">>, <<"close">>}
-  ], <<"Hello, World XXXXXX!">>, Req12),
+  ], base64:decode(?PIXEL_PNG), Req12),
   {ok, Req13, State}.
 
 terminate(_Reason, _Req, _State) ->
