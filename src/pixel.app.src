@@ -1,0 +1,15 @@
+{application, pixel, [
+    {description, "Sberlabs Tracking Pixel Server App"},
+    {vsn, "1"},
+    {modules, []},
+    {registered, [pixel_sup, writer_sup]},
+    {applications, [
+        kernel,
+        stdlib,
+        cowboy,
+        jiffy,
+        uuid
+    ]},
+    {mod, {pixel_app, []}},
+    {env, []}
+]}.
