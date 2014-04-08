@@ -1,0 +1,4 @@
+:name "pixel"
+:lib-dirs '("/")
+:node-sname "pixel"
+:start-command "./run"

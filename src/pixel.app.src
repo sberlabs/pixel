@@ -4,12 +4,14 @@
     {modules, []},
     {registered, [pixel_sup, writer_sup]},
     {applications, [
-        kernel,
-        stdlib,
-        cowboy,
-        jiffy,
-        uuid
-    ]},
+                    kernel,
+                    stdlib,
+                    cowboy,
+                    jiffy,
+                    uuid,
+                    gproc
+                   ]
+    },
     {mod, {pixel_app, []}},
     {env, []}
 ]}.
