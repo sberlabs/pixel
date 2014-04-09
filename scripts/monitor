@@ -1,8 +1,6 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -smp disable -sname monitor -pa /home/wal/work/erlang/pixel/deps/gen_leader/ebin -pa /home/wal/work/erlang/pixel/deps/gproc/ebin -gproc gproc_dist all
-
--mode(compile).
+%%! -smp disable -sname monitor@localhost -gproc gproc_dist all
 
 -define(APPS, [gen_leader, gproc]).
 
@@ -11,11 +9,11 @@ main([Node]) ->
         pong ->
             %% must start gproc AFTER connecting to target node
             [application:start(A) || A <- ?APPS],
-            spawn(fun () -> gproc_ps:subscribe(g, pixel_data), p() end);
+            spawn(fun () -> gproc_ps:subscribe(g, pixel_data), p() end),
+            forever();
         _ ->
             io:format("Node ~s is unavailable.~n", [Node])
-    end,
-    forever();
+    end;
 main(_) ->
     io:format("Usage: monitor <node@host>~n").
 

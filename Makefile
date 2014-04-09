@@ -10,4 +10,3 @@ dep_gproc = https://github.com/esl/gproc.git master
 dep_gen_leader = https://github.com/garret-smith/gen_leader_revival.git master
 
 include erlang.mk
-

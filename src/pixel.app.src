@@ -6,9 +6,11 @@
     {applications, [
                     kernel,
                     stdlib,
+                    sasl,
                     cowboy,
                     jiffy,
                     uuid,
+                    gen_leader,
                     gproc
                    ]
     },

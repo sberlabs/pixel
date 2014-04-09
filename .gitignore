@@ -10,3 +10,6 @@ test/*.beam
 out
 *~
 track*
+*.tar.gz
+gproc_dist*
+*.dump
