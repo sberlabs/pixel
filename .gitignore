@@ -13,3 +13,5 @@ track*
 *.tar.gz
 gproc_dist*
 *.dump
+.#*
+*#
