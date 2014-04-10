@@ -13,10 +13,18 @@ start(_Type, _Args) ->
                                      ]),
     %% Name, NbAcceptors, TransOpts, ProtoOpts
     cowboy:start_http(my_http_listener, 100,
-                      [{port, 8080}],
+                      [{port, get_port()}],
                       [{env, [{dispatch, Dispatch}]}]
                      ),
     pixel_sup:start_link().
 
 stop(_State) ->
     ok.
+
+get_port () ->
+    case os:getenv("ENV_TYPE") of
+        "PROD" ->
+            80;
+        _ ->
+            8080
+    end.

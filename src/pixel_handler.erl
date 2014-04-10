@@ -33,9 +33,9 @@ handle(Req, State) ->
 
     %% Prepare requiest data to be published to subscribers
     Data = {[
-            {ts, jstime(os:timestamp())},
+            {ts, util:jstime(os:timestamp())},
             {client, {[
-                       {ip, addr_to_string(IP)},
+                       {ip, util:addr_to_string(IP)},
                        {port, Port}
                       ]}},
             {resource, {[
@@ -64,8 +64,3 @@ handle(Req, State) ->
 terminate(_Reason, _Req, _State) ->
     ok.
 
-addr_to_string(Addr) ->
-    list_to_binary(string:join([integer_to_list(S) || S <- tuple_to_list(Addr)], ".")).
-
-jstime({Mega, Sec, Micro}) ->
-    round(((Mega * 1000000) + Sec + (Micro / 1000000)) * 1000).

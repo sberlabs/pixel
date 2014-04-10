@@ -10,7 +10,8 @@
 
 -define(FILE_ATOM, track).
 -define(FILE_NAME, "./log/track").
--define(FILE_SIZE, 5*1024*1024).
+%-define(FILE_SIZE, 5*1024*1024).
+-define(FILE_SIZE, 1024).
 -define(FILE_NUM, 20).
 
 -define(LF, <<10>>).
@@ -43,7 +44,8 @@ handle_info({gproc_ps_event, pixel_data, Data}, State) ->
     {noreply, State};
 handle_info({disk_log, _Node, Log, {wrap, _}}, State) ->
     %% Notify subscribers that log file is wrapped
-    gproc_ps:publish(g, log_wrap, Log),
+    Info = disk_log:info(Log),
+    gproc_ps:publish(g, log_wrap, Info),
     {noreply, State}.
 
 terminate(_Reason, _State) ->
