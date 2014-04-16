@@ -35,6 +35,7 @@
       file: dest={{ app_dir }}/bin state=directory
 
     - name: remove release directory and all its files
+      sudo: yes
       file: dest={{ app_dir }}/release state=absent
 
     - name: create release directory
