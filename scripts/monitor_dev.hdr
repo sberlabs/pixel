@@ -1,0 +1,4 @@
+#!/usr/bin/env escript
+%% -*- erlang -*-
+%%! -smp disable -sname monitor@localhost -gproc gproc_dist all
+

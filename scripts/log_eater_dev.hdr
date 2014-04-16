@@ -1,0 +1,4 @@
+#!/usr/bin/env escript
+%% -*- erlang -*-
+%%! -smp disable -sname log_eater@localhost -gproc gproc_dist all
+

@@ -1,0 +1,4 @@
+#!/usr/bin/env escript
+%% -*- erlang -*-
+%%! -smp disable -name monitor@{{ inventory_hostname }} -gproc gproc_dist all
+

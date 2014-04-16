@@ -14,7 +14,6 @@ init(_Type, Req, _Opts) ->
     {ok, Req, undefined_state}.
 
 handle(Req, State) ->
-
     %% Get headers and other properties from incoming request
     {Query, Req2}       = cowboy_req:qs(Req),
     {Headers, Req3}     = cowboy_req:headers(Req2),
@@ -25,13 +24,11 @@ handle(Req, State) ->
     {Pid, Req8}         = cowboy_req:qs_val(<<"pid">>, Req7, <<"">>),
     {Mid, Req9}         = cowboy_req:qs_val(<<"mid">>, Req8, <<"">>),
     {URL, Req10}        = cowboy_req:url(Req9),
-
-    %% Read cookie (set to generated UUID if absent) and set the cookie it in response
+    %% Read the cookie (set it to generated UUID if absent) and set the cookie in our response
     UUID = list_to_binary(uuid:to_string(uuid:uuid4())),
     {Cookie, Req11} = cowboy_req:cookie(<<"sberlabspx">>, Req10, UUID),
     Req12 = cowboy_req:set_resp_cookie(<<"sberlabspx">>, Cookie, [{max_age, ?TENYEARS}], Req11),
-
-    %% Prepare requiest data to be published to subscribers
+    %% Prepare request data to be published to subscribers
     Data = {[
             {ts, util:jstime(os:timestamp())},
             {client, {[
@@ -50,10 +47,8 @@ handle(Req, State) ->
             {mid, Mid},
             {headers, {Headers}}
            ]},
-
     %% Publish data to pixel_data process group
     gproc_ps:publish(g, pixel_data, Data),
-
     %% Reply to original request, serve invisible tracking pixel
     {ok, Req13} = cowboy_req:reply(200, [
                                          {<<"content-type">>, <<"image/png">>},
@@ -63,4 +58,3 @@ handle(Req, State) ->
 
 terminate(_Reason, _Req, _State) ->
     ok.
-

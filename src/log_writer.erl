@@ -1,4 +1,4 @@
--module(writer_srv).
+-module(log_writer).
 -author("wal").
 
 -behavior(gen_server).
@@ -7,25 +7,22 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 
 -define(SERVER, ?MODULE).
-
--define(FILE_ATOM, track).
--define(FILE_NAME, "./log/track").
-%-define(FILE_SIZE, 5*1024*1024).
--define(FILE_SIZE, 1024).
--define(FILE_NUM, 20).
-
 -define(LF, <<10>>).
 
 start_link() ->
     gen_server:start_link({global, ?SERVER}, ?MODULE, [], []).
 
 init([]) ->
+    {ok, Name} = application:get_env(log_name),
+    {ok, File} = application:get_env(log_file),
+    {ok, LogDir} = application:get_env(log_dir),
+    {ok, {Size, Num}} = application:get_env(log_size),
     %% Open log file, create it if needed
-    {ok, Log} = disk_log:open([{name, ?FILE_ATOM},
-                               {file, ?FILE_NAME},
+    {ok, Log} = disk_log:open([{name, Name},
+                               {file, filename:absname(filename:join([LogDir, File]))},
                                {type, wrap},
                                {format, external},
-                               {size, {?FILE_SIZE, ?FILE_NUM}},
+                               {size, {Size, Num}},
                                {notify, true}]),
     %% Register process in pixel_data process group
     gproc_ps:subscribe(g, pixel_data),

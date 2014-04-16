@@ -1,0 +1,26 @@
+-define(APPS, [gen_leader, gproc]).
+
+main([Node]) ->
+    case net_adm:ping(list_to_atom(Node)) of
+        pong ->
+            %% must start gproc AFTER connecting to target node
+            [application:start(A) || A <- ?APPS],
+            spawn(fun () -> gproc_ps:subscribe(g, pixel_data), p() end),
+            forever();
+        _ ->
+            io:format("Node ~s is unavailable.~n", [Node])
+    end;
+main(_) ->
+    io:format("Usage: monitor <node@host>~n").
+
+forever() -> receive _ -> forever() end.
+
+p() ->
+    receive
+        {gproc_ps_event, pixel_data, Data} ->
+            io:format("~p~n", [Data]),
+            p();
+        _ ->
+            io:format("WARNING: Unknown message received!~n"),
+            p()
+    end.

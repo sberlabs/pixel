@@ -4,6 +4,6 @@ apps="sync,sasl,ranch,crypto,cowlib,cowboy,uuid,jiffy,gen_leader,gproc,pixel"
 init_code="[io:format(\"~p~n\", [application:start(A)]) || A <- [$apps]]."
 
 erl -sname pixel -pa $PWD/deps/*/ebin \
-    -pa $PWD/ebin -config ./config/sys -eval "$init_code"
+    -pa $PWD/ebin -config ./config/dev -eval "$init_code"
 
 
