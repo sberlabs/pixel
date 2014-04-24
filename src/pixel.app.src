@@ -7,11 +7,22 @@
                     kernel,
                     stdlib,
                     sasl,
+                    crypto,
+                    ranch,
                     cowboy,
                     jiffy,
                     uuid,
                     gen_leader,
-                    gproc
+                    gproc,
+                    bear,
+                    goldrush,
+                    lager,
+                    meck,
+                    proper,
+                    protobuffs,
+                    zeta,
+                    folsom,
+                    folsomite
                    ]
     },
     {mod, {pixel_app, []}},

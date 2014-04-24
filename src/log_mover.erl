@@ -36,12 +36,15 @@ handle_info({gproc_ps_event, log_wrap, Info}, ArchiveDir) ->
     _P = erlang:open_port({spawn, Cmd},
                           [stderr_to_stdout, in, exit_status,
                           binary, stream, {line, 255}]),
+    folsom_metrics:notify({{pixel, log_mover, copy_initiated}, {inc, 1}}),
     {noreply, ArchiveDir};
 handle_info({_P, {exit_status, 0}}, State) ->
-    %% file copied successfully
+    {ok, {Size, _Num}} = application:get_env(log_size),
+    folsom_metrics:notify({{pixel, log_mover, copy_succeeded}, {inc, 1}}),
+    folsom_metrics:notify({{pixel, log_mover, total_bytes}, {inc, Size}}),
     {noreply, State};
 handle_info({_P, {exit_status, _S}}, State) ->
-    %% file copy error
+    folsom_metrics:notify({{pixel, log_mover, copy_failed}, {inc, 1}}),
     {noreply, State}.
 
 terminate(_Reason, _State) ->

@@ -36,9 +36,15 @@ handle_cast(_Request, State) ->
 
 handle_info({gproc_ps_event, pixel_data, Data}, State) ->
     %% Convert request data into JSON string and log it asynchronously
-    JSONString = jiffy:encode(Data),
-    disk_log:balog(State, <<JSONString/binary, ?LF/binary>>),
-    {noreply, State};
+    try jiffy:encode(Data) of
+        JSONString ->
+            disk_log:balog(State, <<JSONString/binary, ?LF/binary>>),
+            {noreply, State}
+    catch
+        _:Err ->
+            io:format("EXCEPTION CAUGHT: jiffy error '~p', here is the data it caused:~n~p~n", [Err, Data]),
+            {noreply, State}
+    end;
 handle_info({disk_log, _Node, Log, {wrap, _}}, State) ->
     %% Notify subscribers that log file is wrapped
     Info = disk_log:info(Log),

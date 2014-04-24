@@ -1,8 +1,5 @@
-[qa]
+[prod]
 bravo.sberlabs.io
 
-[prod]
-p.sberlabs.io
-
-
-
+[qa]
+charlie.sberlabs.io

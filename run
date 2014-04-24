@@ -1,9 +1,7 @@
 #!/bin/sh
-apps="sync,sasl,ranch,crypto,cowlib,cowboy,uuid,jiffy,gen_leader,gproc,pixel"
+apps="sync,sasl,ranch,crypto,cowlib,cowboy,uuid,jiffy,gen_leader,gproc,compiler,syntax_tools,goldrush,bear,protobuffs,proper,meck,lager,zeta,folsom,folsomite,pixel"
 
 init_code="[io:format(\"~p~n\", [application:start(A)]) || A <- [$apps]]."
 
 erl -sname pixel -pa $PWD/deps/*/ebin \
     -pa $PWD/ebin -config ./config/dev -eval "$init_code"
-
-
