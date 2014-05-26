@@ -1,4 +1,0 @@
-#!/usr/bin/env escript
-%% -*- erlang -*-
-%%! -smp disable -name log_eater@{{ inventory_hostname }} -gproc gproc_dist all
-

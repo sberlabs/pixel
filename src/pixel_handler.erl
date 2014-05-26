@@ -70,8 +70,6 @@ get_cookie_safe(Name, Req, DefVal) ->
         {Cookie, Req1} ->
             {Cookie, Req1}
     end.
-
-
     
 
 

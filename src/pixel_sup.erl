@@ -14,7 +14,9 @@ init([]) ->
               permanent, 2000, worker, [log_writer]},
     Mover  = {log_mover, {log_mover, start_link, []},
               permanent, 2000, worker, [log_mover]},
-    Children = [Writer, Mover],
+    UDP_Sender  = {udp_sender, {udp_sender, start_link, []},
+              permanent, 2000, worker, [udp_sender]},
+    Children = [Writer, Mover, UDP_Sender],
     RestartStrategy = {one_for_one, 10, 10},
     {ok, {RestartStrategy, Children}}.
 

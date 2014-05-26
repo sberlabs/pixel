@@ -2,7 +2,7 @@
     {description, "Sberlabs Tracking Pixel Server App"},
     {vsn, "1"},
     {modules, []},
-    {registered, [pixel_sup, writer_sup]},
+    {registered, [pixel_sup]},
     {applications, [
                     kernel,
                     stdlib,

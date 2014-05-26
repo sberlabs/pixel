@@ -8,20 +8,7 @@
     node_name: "pixel"
 
   tasks:
-    - name: patch sudoers file (1/2)
-      sudo: yes
-      lineinfile: 
-          dest=/etc/sudoers
-          regexp="^Defaults\tenv_reset" state=absent 
-
-    - name: patch sudoers file (2/2)
-      sudo: yes
-      lineinfile: 
-          dest=/etc/sudoers
-          regexp="^Defaults\tsecure_path" state=absent 
-
     - name: stop application
-      sudo: yes
       ignore_errors: yes
       shell: chdir={{ app_dir }} export PATH=$PATH:/usr/lib/erlang/bin && {{ app_dir }}/release/bin/{{ app }} stop
 
@@ -35,7 +22,6 @@
       file: dest={{ app_dir }}/bin state=directory
 
     - name: remove release directory and all its files
-      sudo: yes
       file: dest={{ app_dir }}/release state=absent
 
     - name: create release directory
@@ -44,6 +30,9 @@
     - name: copy and unpack the release
       unarchive: src=_rel/pixel-1.tar.gz dest={{ app_dir }}/release
 
+    - name: copy tidyup script to destination server
+      copy: src=bin/tidyup dest={{ app_dir }}/bin/tidyup mode=755
+
     - name: template monitor script out to destination server 
       template: src=j2/monitor.j2 dest={{ app_dir }}/bin/monitor mode=755
 
@@ -51,7 +40,4 @@
       template: src=j2/vm.args.j2 dest={{ app_dir }}/release/releases/1/vm.args
 
     - name: launch application
-      sudo: yes
       shell: chdir={{ app_dir }} export export PATH=$PATH:/usr/lib/erlang/bin && {{ app_dir }}/release/bin/{{ app }} start
-
-

@@ -1,0 +1,27 @@
+---
+# This playbook upgrade the host packages and harden its security
+
+#- name: Disable password authentication
+#  lineinfile: dest=/etc/ssh/sshd_config
+#    regexp="ˆPasswordAuthentication" insertafter="ˆ#PasswordAuthentication" line="PasswordAuthentication no"
+#  notify: restart ssh
+
+- name: Update package list and upgrade packages
+  apt: update_cache=yes upgrade=yes
+
+- name: Create iptables config directory
+  file: dest=/etc/iptables state=directory
+
+- name: Copy configuration file
+  copy: src=rules dest=/etc/iptables/rules
+  notify: apply new iptables
+
+- name: Ensure that iptables will be started upon system start
+  copy: src=iptables dest=/etc/network/if-pre-up.d/iptables mode=0755
+
+- name: Install fail2ban
+  apt: pkg=fail2ban state=latest
+
+- name: Configure fail2ban
+  template: src=jail.j2 dest=/etc/fail2ban/jail.local
+  notify: restart fail2ban
