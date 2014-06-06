@@ -1,4 +1,5 @@
 ## Name of the node
+
 -name {{ node_name | mandatory }}@{{ inventory_hostname }}
 
 ## Heartbeat management; auto-restarts VM if it dies or becomes unresponsive
@@ -9,7 +10,17 @@
 
 ## Enable kernel poll and a few async threads
 +K true
-+A 10
++A 5
+
+## Enable SMP
+#-smp enable
+
+## Performance tuning
+#+sbt db
+#+scl false
+#+sfwi 500
+#+spp true
+#+zdbbl 16384
 
 ## Increase number of concurrent ports/sockets
 -env ERL_MAX_PORTS 4096

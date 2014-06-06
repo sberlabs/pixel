@@ -45,6 +45,9 @@ handle_info({gproc_ps_event, pixel_data, Data}, State) ->
             io:format("EXCEPTION CAUGHT: jiffy error '~p', here is the data it caused:~n~p~n", [Err, Data]),
             {noreply, State}
     end;
+    %%JSONString = jsx:encode(Data),
+    %%disk_log:balog(State, <<JSONString/binary, ?LF/binary>>),
+    %%{noreply, State};
 handle_info({disk_log, _Node, Log, {wrap, _}}, State) ->
     %% Notify subscribers that log file is wrapped
     Info = disk_log:info(Log),

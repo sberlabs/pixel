@@ -4,8 +4,7 @@
   remote_user: wal
   vars:
     app: "pixel"
-    app_dir: "/home/wal/pixel"
-    node_name: "pixel"
+    app_dir: "/home/wal/{{ node_name | mandatory }}"
 
   tasks:
     - name: stop application
@@ -28,16 +27,19 @@
       file: dest={{ app_dir }}/release state=directory
 
     - name: copy and unpack the release
-      unarchive: src=_rel/pixel-1.tar.gz dest={{ app_dir }}/release
+      unarchive: src=../../_rel/pixel-1.tar.gz dest={{ app_dir }}/release
 
     - name: copy tidyup script to destination server
-      copy: src=bin/tidyup dest={{ app_dir }}/bin/tidyup mode=755
+      copy: src=../../bin/tidyup dest={{ app_dir }}/bin/tidyup mode=755
 
     - name: template monitor script out to destination server 
-      template: src=j2/monitor.j2 dest={{ app_dir }}/bin/monitor mode=755
+      template: src=../../j2/monitor.j2 dest={{ app_dir }}/bin/monitor mode=755
 
     - name: template vm.args.j2 out to destination server 
-      template: src=j2/vm.args.j2 dest={{ app_dir }}/release/releases/1/vm.args
+      template: src=../../j2/vm.args.j2 dest={{ app_dir }}/release/releases/1/vm.args
+
+    - name: template sys.config.j2 out to destination server 
+      template: src=../../j2/sys.config.j2 dest={{ app_dir }}/release/releases/1/sys.config
 
     - name: launch application
       shell: chdir={{ app_dir }} export export PATH=$PATH:/usr/lib/erlang/bin && {{ app_dir }}/release/bin/{{ app }} start

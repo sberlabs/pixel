@@ -1,11 +1,14 @@
 [
  {pixel, [
-          {http_port, 8080 },
+          {http_port, {{ http_port | mandatory }} },
           {log_name, track},
           {log_file, "track"},
           {log_dir, "../log"},
           {log_archive, "../log_archive"},
-          {log_size, {10485760, 100}}
+          {log_size, {10485760, 100}},
+          {eflame, {{ profiler | mandatory }} },
+          {udp_host, "{{ udp_host | mandatory }}" },
+          {udp_port, {{ udp_port | mandatory}} }
          ]},
 
  {folsomite, [

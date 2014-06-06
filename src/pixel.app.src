@@ -22,7 +22,8 @@
                     protobuffs,
                     zeta,
                     folsom,
-                    folsomite
+                    folsomite,
+                    eflame
                    ]
     },
     {mod, {pixel_app, []}},

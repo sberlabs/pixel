@@ -9,8 +9,8 @@ addr_to_string(Addr) ->
 jstime({Mega, Sec, Micro}) ->
     round(((Mega * 1000000) + Sec + (Micro / 1000000)) * 1000).
 
-jstime_micro({_Mega, Sec, Micro}) ->
-    Sec*1000000 + Micro.
+jstime_micro({Mega, Sec, Micro}) ->
+    Mega*1000000000000 + Sec*1000000 + Micro.
 
 atoi([$- | String]) ->
     -1 * atoi(String, 0);

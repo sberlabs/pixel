@@ -1,16 +1,26 @@
 ## Name of the node
--name pixel@p.sberlabs.io
 
-## Cookie for distributed erlang
--setcookie XUzzYOI12
+-name pixel@p.sberlabs.io
 
 ## Heartbeat management; auto-restarts VM if it dies or becomes unresponsive
 ## (Disabled by default..use with caution!)
 ##-heart
 
+-setcookie XUzzYOI12
+
 ## Enable kernel poll and a few async threads
 +K true
-+A 5
++A 10
+
+## Enable SMP
+-smp enable
+
+## Performance tuning
++sbt db
++scl false
++sfwi 500
++spp true
++zdbbl 16384
 
 ## Increase number of concurrent ports/sockets
 -env ERL_MAX_PORTS 4096
